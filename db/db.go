@@ -2,23 +2,24 @@ package db
 
 import (
 	"database/sql"
-    _ "github.com/lib/pq"
-    "fmt"
+	"fmt"
+
+	_ "github.com/lib/pq" // PostgreSQL ドライバのインポート
 )
 
-func InitDB(dataSourceName string) (*spl.DB error) {
-	db,err := sql.Open("postgres", dataSourceName)
-	if err != nill {
+func InitDB(dataSourceName string) (*sql.DB, error) {
+	// DBの接続をオープン
+	db, err := sql.Open("postgres", dataSourceName)
+	if err != nil {
 		return nil, err
 	}
-	return db, nil
 
-
-    // PostgreSQLに接続できるか確認
-  err = db.Ping()
+	// PostgreSQLに接続できるか確認
+	err = db.Ping()
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to PostgreSQL: %v". err)
+		return nil, fmt.Errorf("failed to connect to PostgreSQL: %v", err)
 	}
 
-	return db.nil
+	// 成功したらDBインスタンスを返す
+	return db, nil
 }
